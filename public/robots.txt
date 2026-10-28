@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /recuperar-senha
+Disallow: /redefinir-senha
+
+Sitemap: https://movimentotbt.art/sitemap.xml

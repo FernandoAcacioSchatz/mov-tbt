@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Redefinir sua senha — Movimento TBT</title>
+</head>
+<body style="margin:0;padding:0;background:#fbf8f1;">
+  <!-- Texto de prévia (aparece ao lado do assunto na caixa de entrada) -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">Use o link para criar uma nova senha de acesso à área do Movimento TBT. Vale por 1 hora e uma única vez.</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fbf8f1;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
+
+          <!-- Logo -->
+          <tr>
+            <td align="center" style="padding:0 0 24px;">
+              <img src="https://movimento-tbt.vercel.app/images/email/logo-tbt.png" width="240" alt="Temporada Blumenauense de Teatro" style="display:block;width:240px;max-width:70%;height:auto;border:0;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#2a262d;">
+            </td>
+          </tr>
+
+          <!-- Cartão -->
+          <tr>
+            <td style="background:#ffffff;border:2px solid #2a262d;border-radius:18px;padding:36px 32px;font-family:Arial,Helvetica,sans-serif;color:#2a262d;">
+              <p style="margin:0 0 8px;font-size:13px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:#ce2893;">Área do movimento</p>
+              <h1 style="margin:0 0 20px;font-size:26px;line-height:1.2;font-weight:800;color:#2a262d;">Vamos criar uma nova senha</h1>
+              <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3e3942;">Olá! Recebemos um pedido para redefinir a senha da conta <strong>{{ .Email }}</strong> no site do Movimento Temporada Blumenauense de Teatro.</p>
+              <p style="margin:0 0 28px;font-size:16px;line-height:1.6;color:#3e3942;">Clique no botão abaixo para escolher a nova senha:</p>
+
+              <!-- Botão -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 28px;">
+                <tr>
+                  <td align="center" bgcolor="#ce2893" style="border-radius:10px;">
+                    <a href="{{ .ConfirmationURL }}" target="_blank" style="display:inline-block;padding:16px 32px;font-family:Arial,Helvetica,sans-serif;font-size:17px;font-weight:bold;color:#ffffff;text-decoration:none;border-radius:10px;">Criar nova senha</a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Segurança -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff3c4;border-radius:12px;">
+                <tr>
+                  <td style="padding:16px 18px;font-size:14px;line-height:1.55;color:#3e3942;">
+                    <strong style="color:#2a262d;">Por segurança:</strong><br>
+                    • o link vale por <strong>1 hora</strong> e só pode ser usado <strong>uma vez</strong>;<br>
+                    • depois da troca, todas as sessões abertas são encerradas;<br>
+                    • nunca pedimos sua senha por e-mail, WhatsApp ou telefone.
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:24px 0 0;font-size:14px;line-height:1.6;color:#5c5663;"><strong>Não foi você?</strong> Pode ignorar esta mensagem: sua senha continua a mesma e ninguém consegue trocá-la sem este link.</p>
+            </td>
+          </tr>
+
+          <!-- Rodapé -->
+          <tr>
+            <td align="center" style="padding:24px 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#5c5663;">
+              Movimento Temporada Blumenauense de Teatro · Blumenau, SC<br>
+              <a href="https://movimentotbt.art" style="color:#ce2893;text-decoration:underline;">movimentotbt.art</a><br>
+              Este é um e-mail automático; respostas não são lidas.
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

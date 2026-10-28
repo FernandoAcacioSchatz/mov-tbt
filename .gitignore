@@ -1,0 +1,13 @@
+node_modules
+# acervo bruto de imagens (655 MB); o site usa só as versões otimizadas em public/images
+/image
+dist
+.env
+.env.local
+.env.*.local
+playwright-report
+test-results
+*.log
+.DS_Store
+.vercel
+.netlify
