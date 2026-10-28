@@ -110,7 +110,6 @@ export const SECTIONS: Record<SectionKey, SectionDef> = {
     title: 'Início',
     resources: [],
     texts: [
-      { key: 'heroKicker', label: 'Frase pequena acima do título', kind: 'i' },
       { key: 'heroLine1', label: 'Título — linha 1', kind: 'i' },
       { key: 'heroLine2', label: 'Título — linha 2 (contorno)', kind: 'i' },
       { key: 'heroText', label: 'Texto de apresentação', kind: 'A' },

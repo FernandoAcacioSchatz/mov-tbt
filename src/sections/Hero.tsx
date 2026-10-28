@@ -24,7 +24,6 @@ export function Hero() {
     <section id="inicio" className="hero" aria-labelledby="hero-title">
       <EditButton section="inicio" />
       <div className="container hero__inner">
-        <div className="kicker kicker--yellow">{t('heroKicker')}</div>
         <div className="hero__heading">
           {/* desenho das máscaras da logo, atrás do título */}
           <img className="hero__masks" src="/images/mascaras.webp" alt="" width={640} height={605} aria-hidden="true" />
