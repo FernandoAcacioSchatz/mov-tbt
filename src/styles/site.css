@@ -43,7 +43,7 @@
 .hero { position: relative; overflow: hidden; }
 .hero__inner { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding-block: clamp(2.75rem, 7vw, 4.5rem) 0; }
 .hero__heading { position: relative; isolation: isolate; width: 100%; margin-top: var(--space-4); }
-.hero__masks { position: absolute; z-index: -1; left: 30%; top: 52%; height: 194%; width: auto; max-width: none; transform: translate(-50%, -50%) rotate(-6deg); opacity: 0.5; pointer-events: none; }
+.hero__masks { position: absolute; z-index: -1; left: 30%; top: 52%; height: 194%; width: auto; max-width: none; transform: translate(-50%, -50%) rotate(-6deg); pointer-events: none; }
 .hero__title { width: 100%; font-family: var(--font-display); font-size: calc(var(--text-hero) * var(--fit, 1)); font-weight: 800; line-height: 0.9; letter-spacing: 0.01em; text-transform: uppercase; }
 /* cada linha fica inteira; useFitText reduz --fit até a mais larga caber */
 .hero__line { display: block; width: max-content; max-width: none; margin-inline: auto; white-space: nowrap; overflow-wrap: normal; hyphens: manual; }
