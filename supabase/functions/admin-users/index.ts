@@ -9,7 +9,7 @@ const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 // Origens permitidas (CORS). Acrescente o domínio do site em produção via secret ALLOWED_ORIGINS.
 const ALLOWED_ORIGINS = (Deno.env.get("ALLOWED_ORIGINS") ??
-  "https://movimentotbt.art,https://www.movimentotbt.art,https://movimento-tbt.vercel.app")
+  "https://movimentotbt.art,https://www.movimentotbt.art,https://mov-tbt.vercel.app")
   .split(",").map((s) => s.trim()).filter(Boolean);
 // Desenvolvimento: qualquer porta local (o Vite troca de porta quando a 5173 está ocupada).
 const LOCAL_ORIGIN = /^http:\/\/(localhost|127\.0\.0\.1):\d{1,5}$/;

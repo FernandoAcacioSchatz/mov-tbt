@@ -34,7 +34,7 @@ select id, email from auth.users where email = 'SEU_EMAIL_AQUI';
 Authentication → Sign In / Providers → desligue **Allow new users to sign up**.
 Authentication → Passwords → mínimo 12, exigir maiúsculas/minúsculas/números, ative **Leaked password protection** (plano Pro) .
 Authentication → Rate Limits → mantenha os padrões ou reduza.
-Edge Functions → `admin-users` → Secrets: `ALLOWED_ORIGINS` = `https://movimentotbt.art,https://www.movimentotbt.art` (+ domínio provisório de teste, se houver).
+Edge Functions → `admin-users` → Secrets: `ALLOWED_ORIGINS` = `https://movimentotbt.art,https://www.movimentotbt.art,https://mov-tbt.vercel.app`.
 
 ## Recuperação de senha (e-mail personalizado)
 O site tem "Esqueci minha senha" em `/login` → `/recuperar-senha`, e o link do e-mail abre `/redefinir-senha`.
@@ -47,7 +47,7 @@ Ajustes no painel (uma vez só):
 1. **Endereços permitidos** — Authentication → URL Configuration
    - Site URL: `https://movimentotbt.art`
    - Redirect URLs: `http://localhost:*/redefinir-senha` (qualquer porta local: 5173 do `npm run dev`, 3000 do `vercel dev`),
-     `https://movimentotbt.art/redefinir-senha`, `https://www.movimentotbt.art/redefinir-senha` e `https://movimento-tbt.vercel.app/redefinir-senha`.
+     `https://movimentotbt.art/redefinir-senha`, `https://www.movimentotbt.art/redefinir-senha` e `https://mov-tbt.vercel.app/redefinir-senha`.
    Sem isso o Supabase ignora o endereço pedido e manda o link para o Site URL (enquanto o domínio ainda estiver na Wix, dá 404).
 2. **Remetente próprio via Brevo** — na Brevo: *SMTP & API → SMTP → Gerar nova chave SMTP* (copie a chave; ela só aparece uma vez).
    No Supabase: Authentication → Emails → **SMTP Settings** → *Enable custom SMTP*:
@@ -59,6 +59,6 @@ Ajustes no painel (uma vez só):
 3. **Modelo do e-mail** — Authentication → Emails → Templates → **Reset Password**:
    - Subject: `Redefinir sua senha — Movimento TBT`
    - Body: cole o conteúdo de [`templates/recuperar-senha.html`](templates/recuperar-senha.html).
-   O logo do e-mail vem de `https://movimento-tbt.vercel.app/images/email/logo-tbt.png` (troque para `movimentotbt.art` depois da troca do DNS).
+   O logo do e-mail vem de `https://mov-tbt.vercel.app/images/email/logo-tbt.png` (troque para `movimentotbt.art` depois da troca do DNS).
 4. **Senhas** — Authentication → Providers → Email: *Minimum password length* = 12 e *Password requirements* = letras maiúsculas, minúsculas e números.
 5. Confirme também *Allow new users to sign up* **desligado** (só administradores criam contas, pelo site).

@@ -24,9 +24,6 @@ export function Cast() {
   const current = open === null ? null : members[open];
   const currentColor = open === null ? undefined : accentColor(open);
   const currentPhoto = current ? safeUrl(current.photo_url) : null;
-  // fotos bem mais altas que largas (selfies 9:16) não são cortadas no painel: ver .member__photo--fit
-  const [tallPhoto, setTallPhoto] = useState<string | null>(null);
-  const fit = currentPhoto !== null && tallPhoto === currentPhoto;
 
   return (
     <section id="integrantes" className="section" aria-labelledby="elenco-title">
@@ -79,10 +76,8 @@ export function Cast() {
           <div className="member__inner" style={{ borderColor: currentColor }}>
             <button type="button" className="arrow arrow--pause member__close" onClick={() => dialog.current?.close()} aria-label="Fechar">✕</button>
             {currentPhoto && (
-              <div className={fit ? 'member__photo member__photo--fit' : 'member__photo'} style={{ background: currentColor }}>
-                {fit && <img className="member__photo-bg" src={currentPhoto} alt="" aria-hidden="true" />}
-                <img key={currentPhoto} src={currentPhoto} alt={`Foto de ${current.name}`}
-                  onLoad={(e) => { const i = e.currentTarget; if (i.naturalHeight > i.naturalWidth * 1.5) setTallPhoto(currentPhoto); }} />
+              <div className="member__photo">
+                <img key={currentPhoto} className="member__photo-img" src={currentPhoto} alt={`Foto de ${current.name}`} />
               </div>
             )}
             <div className="member__body">

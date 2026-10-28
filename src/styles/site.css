@@ -162,7 +162,8 @@
 .cast-card__open { flex: 1; display: flex; flex-direction: column; text-align: left; border: 0; padding: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; border-radius: inherit; }
 .cast-card__open:focus-visible { outline-offset: -6px; }
 .cast-card__photo { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; }
-.cast-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transition: transform 0.4s; }
+/* a foto sempre preenche o quadro; o corte, quando há, mira a parte de cima, onde costuma estar o rosto */
+.cast-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform 0.4s; }
 .cast-card__open:hover .cast-card__img { transform: scale(1.04); }
 .cast-card__body { flex: 1; padding: 1rem 1.25rem 1.25rem; display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-3); border-top: var(--border); }
 .cast-card__info { display: flex; flex-direction: column; gap: 4px; }
@@ -180,22 +181,26 @@
 }
 
 /* Painel do integrante */
-.member { width: min(56rem, calc(100vw - 2 * var(--gutter))); max-height: calc(100dvh - 2 * var(--gutter)); margin: auto; padding: 0; border: 0; background: transparent; color: var(--color-ink); overflow: visible; }
+.member { --member-h: min(36rem, calc(100dvh - 2 * var(--gutter))); width: min(56rem, calc(100vw - 2 * var(--gutter))); max-height: calc(100dvh - 2 * var(--gutter)); margin: auto; padding: 0; border: 0; background: transparent; color: var(--color-ink); overflow: visible; }
 .member::backdrop { background: rgba(20, 18, 22, 0.8); }
-.member__inner { position: relative; display: flex; flex-wrap: wrap; background: var(--color-cream); border: 4px solid var(--color-yellow); border-radius: 1.375rem; overflow: hidden; max-height: calc(100dvh - 2 * var(--gutter)); overflow-y: auto; }
+/* o cartão não rola: só o texto rola (.member__body), assim a barra fica dentro das bordas arredondadas */
+.member__inner { position: relative; display: flex; background: var(--color-cream); border: 4px solid var(--color-yellow); border-radius: 1.375rem; overflow: hidden; max-height: var(--member-h); }
 .member__close { position: absolute; top: var(--space-3); right: var(--space-3); z-index: 1; width: var(--tap-target); height: var(--tap-target); font-size: 1rem; }
-.member__photo { flex: 1 1 18rem; min-height: 30rem; position: relative; overflow: hidden; }
-.member__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-/* foto muito alta (ex.: selfie de celular): aparece inteira, menor, sobre uma cópia desfocada dela mesma,
-   para o painel ficar do mesmo tamanho dos outros sem cortar a pessoa */
-.member__photo--fit img { object-fit: contain; }
-.member__photo--fit .member__photo-bg { inset: -1.5rem; width: calc(100% + 3rem); height: calc(100% + 3rem); object-fit: cover; filter: blur(18px); opacity: 0.75; }
-.member__body { flex: 1 1 22rem; padding: var(--space-6) var(--space-5) var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
+/* todos os cartões no mesmo formato vertical: coluna da foto em pé (3:4), ao lado do texto.
+   A foto sempre preenche a coluna; se a proporção for outra, o corte mira a parte de cima, onde costuma estar o rosto */
+.member__photo { position: relative; flex: none; overflow: hidden; height: calc(var(--member-h) - 8px); width: min(calc((var(--member-h) - 8px) * 0.75), 55%); }
+.member__photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+.member__body { flex: 1 1 22rem; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin: var(--space-3) 4px var(--space-3) 0; padding: var(--space-4) var(--space-5) var(--space-3); display: flex; flex-direction: column; gap: var(--space-3); scrollbar-width: thin; scrollbar-color: var(--color-muted) transparent; }
 .member__name { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 800; line-height: 1.15; padding-right: var(--space-7); }
 .member__role { font-weight: 700; color: var(--color-magenta); }
 .member__bio { line-height: 1.6; white-space: pre-line; color: var(--color-ink-soft); }
 .member__link { align-self: flex-start; margin-top: var(--space-2); }
-@media (max-width: 640px) { .member__photo { min-height: 16rem; } .member__body { padding-top: var(--space-5); } }
+/* celular: sempre foto em cima e texto embaixo */
+@media (max-width: 640px) {
+  .member__inner { flex-direction: column; }
+  .member__photo { width: 100%; height: 45dvh; }
+  .member__body { flex-basis: auto; padding-inline: var(--space-4); }
+}
 
 /* Contato */
 .contact { display: flex; flex-wrap: wrap; gap: clamp(2rem, 5vw, 3.5rem); }
