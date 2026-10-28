@@ -1,0 +1,65 @@
+/* Design tokens do Movimento TBT — única fonte de verdade para cores, tipografia e espaçamentos. */
+:root {
+  /* Cores da marca */
+  --color-teal: #15a792;
+  --color-magenta: #ce2893;
+  --color-yellow: #fbd323;
+  --color-orange: #f18b25;
+  --color-pink: #ff6ec4;
+  --color-ink: #2a262d;
+  --color-ink-soft: #3e3942;
+  --color-muted: #5c5663; /* contraste ≥ 4.5:1 sobre creme e branco */
+  --color-cream: #fbf8f1;
+  --color-cream-2: #fff3c4;
+  --color-white: #ffffff;
+  --color-line: #e7e0d2;
+  --color-danger: #a3126f;
+  --color-success: #0f7a69;
+  --accent-cycle-1: var(--color-yellow);
+  --accent-cycle-2: var(--color-teal);
+  --accent-cycle-3: var(--color-pink);
+  --accent-cycle-4: var(--color-orange);
+
+  /* Tipografia */
+  --font-display: 'Dosis', system-ui, sans-serif;
+  --font-body: 'Dosis', system-ui, sans-serif;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.5rem;
+  --text-2xl: clamp(2rem, 5vw, 3.375rem);
+  --text-hero: clamp(3rem, 10.5vw, 9.5rem); /* palavras longas são encolhidas por useFitText */
+
+  /* Espaçamento (escala de 4px) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6.5rem;
+  --section-y: clamp(2rem, 4vw, 3.5rem);
+
+  /* Layout */
+  --container: 77.5rem; /* 1240px */
+  --gutter: clamp(1.125rem, 4vw, 1.75rem);
+
+  /* Forma */
+  --radius-sm: 0.625rem;
+  --radius-md: 1.125rem;
+  --radius-lg: 1.625rem;
+  --border: 2px solid var(--color-ink);
+  --shadow-hard: 8px 8px 0 var(--color-ink);
+  --shadow-yellow: 10px 10px 0 var(--color-yellow);
+  --shadow-magenta: 14px 14px 0 var(--color-magenta);
+
+  /* Interação */
+  --focus-ring: 3px solid var(--color-magenta);
+  --transition: 0.18s ease;
+  --tap-target: 2.75rem; /* 44px */
+}
+
+/* Breakpoints de referência (usados nos @media): 640px (celular) e 1080px (menu compacto) */

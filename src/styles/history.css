@@ -1,0 +1,119 @@
+/* História: anos → (postagens | filipetas | clipagens). Usa apenas tokens de variables.css. */
+.history__section { padding-top: var(--space-6); }
+.history__lead { max-width: 40rem; margin-block: var(--space-4) var(--space-6); }
+.history__year { font-size: clamp(3rem, 12vw, 6rem); }
+.history__intro { margin-block: var(--space-4) var(--space-6); max-width: 46rem; }
+
+/* Trilha "Início › História › 2006" */
+.crumbs { padding-top: var(--space-5); font-size: var(--text-sm); }
+.crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+.crumbs li { display: inline-flex; align-items: center; min-height: var(--tap-target); }
+.crumbs li:not(:last-child)::after { content: '›'; margin-left: var(--space-2); color: var(--color-muted); }
+.crumbs a { text-decoration: underline; color: var(--color-ink-soft); min-height: var(--tap-target); display: inline-flex; align-items: center; }
+.crumbs [aria-current] { color: var(--color-muted); overflow-wrap: anywhere; }
+
+/* Barra de anos (rola na horizontal no celular) */
+.yearbar { display: flex; gap: var(--space-2); overflow-x: auto; padding-block: var(--space-3); margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-snap-type: x proximity; }
+.yearbar__item { flex: none; scroll-snap-align: center; min-height: var(--tap-target); padding: 0 var(--space-4); display: inline-flex; align-items: center; border: var(--border); border-radius: 999px; font-family: var(--font-display); font-weight: 700; background: var(--color-white); }
+.yearbar__item:hover { background: var(--color-yellow); }
+.yearbar__item[aria-current='page'] { background: var(--color-ink); color: var(--color-white); }
+
+/* /historia — grade de anos */
+.years-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr)); gap: var(--space-4); }
+@media (max-width: 420px) { .years-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Cartão de ano com capa: foto do 1º espetáculo, escurecida embaixo para o ano ficar legível */
+.year-card { position: relative; display: flex; align-items: flex-end; aspect-ratio: 4 / 5; overflow: hidden; border: var(--border); border-radius: var(--radius-md); color: var(--color-white); transition: box-shadow var(--transition), transform var(--transition); }
+.year-card:hover { box-shadow: 6px 6px 0 var(--color-ink); transform: translate(-2px, -2px); }
+.year-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.year-card:hover .year-card__img { transform: scale(1.05); }
+.year-card__shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,18,22,0.92) 0%, rgba(20,18,22,0.55) 40%, rgba(20,18,22,0) 70%); }
+.year-card__body { position: relative; display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-4); }
+.year-card__year { font-family: var(--font-display); font-weight: 800; font-size: 2rem; line-height: 1; }
+.year-card__counts { font-size: var(--text-xs); font-weight: 500; line-height: 1.35; color: #f4efe6; }
+.years-grid--compact { grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 100%), 1fr)); width: 100%; }
+.years-grid--compact .year-card__year { font-size: 1.5rem; }
+.years-grid--compact .year-card__body { padding: var(--space-3); }
+@media (max-width: 420px) { .years-grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); } .year-card__year { font-size: 1.6rem; } }
+
+/* /historia/:ano — as três portas */
+.doors { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); gap: var(--space-5); }
+.door { position: relative; display: flex; flex-direction: column; gap: var(--space-2); min-height: 11rem; padding: var(--space-6) var(--space-5); background: var(--color-white); border: var(--border); border-radius: var(--radius-lg); box-shadow: 8px 8px 0 var(--door-color, var(--color-yellow)); transition: transform var(--transition), box-shadow var(--transition); }
+.door:hover { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 var(--door-color, var(--color-yellow)); }
+.door__label { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.125rem); text-transform: uppercase; }
+.door__count { color: var(--color-ink-soft); }
+.door__count strong { font-family: var(--font-display); font-size: 1.5rem; color: var(--color-ink); }
+.door__go { position: absolute; right: var(--space-5); bottom: var(--space-4); font-size: 2rem; font-weight: 700; }
+
+/* /historia/:ano/postagens — linha do tempo */
+.timeline { list-style: none; margin: var(--space-6) 0 0; padding: 0 0 0 var(--space-5); border-left: 3px solid var(--color-ink); display: flex; flex-direction: column; gap: var(--space-5); }
+.timeline__item { position: relative; display: flex; flex-direction: column; gap: var(--space-2); }
+.timeline__item::before { content: ''; position: absolute; left: calc(var(--space-5) * -1 - 0.6rem); top: 0.35rem; width: 0.95rem; height: 0.95rem; border-radius: 50%; background: var(--color-magenta); border: 3px solid var(--color-cream); }
+.timeline__date { font-family: var(--font-display); font-weight: 700; font-size: var(--text-sm); letter-spacing: 0.08em; color: var(--color-magenta); }
+.tl-card { display: flex; gap: var(--space-4); background: var(--color-white); border: var(--border); border-radius: var(--radius-md); overflow: hidden; transition: box-shadow var(--transition); }
+.tl-card:hover { box-shadow: 6px 6px 0 var(--color-ink); }
+.tl-card__thumb { flex: 0 0 7.5rem; min-height: 6.5rem; background: var(--color-cream-2); }
+.tl-card__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.tl-card__body { display: flex; flex-direction: column; justify-content: center; gap: var(--space-1); padding: var(--space-4) var(--space-4) var(--space-4) 0; min-width: 0; }
+.tl-card__title { font-family: var(--font-display); font-weight: 700; font-size: 1.1875rem; line-height: 1.2; overflow-wrap: break-word; }
+.tl-card__meta { font-size: var(--text-sm); color: var(--color-muted); }
+@media (max-width: 420px) {
+  .tl-card { flex-direction: column; gap: 0; }
+  .tl-card__thumb { flex: none; height: 9rem; }
+  .tl-card__body { padding: var(--space-4); }
+}
+
+/* Postagem completa */
+.post__title { font-size: clamp(1.75rem, 3vw + 0.9rem, 3rem); font-weight: 800; margin-top: var(--space-3); }
+.post__meta { margin-top: var(--space-3); color: var(--color-ink-soft); font-weight: 500; }
+.post__layout { display: grid; gap: var(--space-6); margin-top: var(--space-6); align-items: start; }
+.post__text { min-width: 0; }
+.post__cover { width: 100%; max-width: 26rem; height: auto; border: var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-yellow); }
+@media (min-width: 900px) {
+  .post__layout { grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem); }
+  .post__text { grid-column: 1; grid-row: 1; }
+  .post__cover { grid-column: 2; grid-row: 1; position: sticky; top: var(--space-5); }
+}
+.post__subtitle { font-size: 1.5rem; margin: var(--space-7) 0 var(--space-4); }
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-top: var(--space-8); }
+.pager__link { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-4) var(--space-5); border: var(--border); border-radius: var(--radius-md); background: var(--color-white); font-weight: 700; overflow-wrap: anywhere; }
+.pager__link small { font-weight: 500; color: var(--color-muted); font-size: var(--text-xs); letter-spacing: 0.08em; text-transform: uppercase; }
+.pager__link--next { text-align: right; }
+.pager__link:hover { box-shadow: 6px 6px 0 var(--color-ink); }
+@media (max-width: 640px) { .pager { grid-template-columns: 1fr; } .pager__link--next { text-align: left; } }
+
+/* Galeria (filipetas, clipagens, fotos das postagens) */
+/* Grade (não colunas): lida da esquerda para a direita, linha a linha — a mesma ordem cronológica do banco. */
+.gallery { list-style: none; margin: var(--space-5) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(13rem, 100%), 1fr)); gap: var(--space-4); align-items: start; }
+.gallery__item { background: var(--color-white); border: var(--border); border-radius: var(--radius-md); overflow: hidden; }
+.gallery__open { display: block; width: 100%; padding: 0; border: 0; background: var(--color-cream-2); cursor: zoom-in; }
+.gallery__open img { width: 100%; aspect-ratio: 4 / 5; object-fit: contain; padding: var(--space-2); }
+.gallery__caption { padding: var(--space-3) var(--space-4); font-size: var(--text-sm); line-height: 1.4; display: flex; flex-direction: column; gap: 2px; }
+.gallery__caption span { color: var(--color-muted); }
+
+.lightbox { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; padding: 0; border: 0; background: rgba(20, 18, 22, 0.96); color: var(--color-cream); }
+.lightbox::backdrop { background: rgba(20, 18, 22, 0.85); }
+.lightbox__inner { height: 100%; display: flex; flex-direction: column; }
+.lightbox__img { flex: 1 1 auto; min-height: 0; width: 100%; height: 100%; object-fit: contain; padding: var(--space-4); }
+.lightbox__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--gutter) max(var(--space-4), env(safe-area-inset-bottom)); }
+.lightbox__caption { display: flex; flex-direction: column; gap: 2px; font-size: var(--text-sm); min-width: 0; }
+.lightbox__caption span { color: #cfc7d6; }
+.lightbox__actions { display: flex; gap: var(--space-2); }
+
+/* Seção "História" na página inicial */
+.timeline-teaser { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); margin-top: var(--space-4); }
+.year-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.year-chip { display: inline-flex; align-items: center; min-height: var(--tap-target); padding: 0 var(--space-4); border: var(--border); border-radius: 999px; font-family: var(--font-display); font-weight: 700; color: var(--color-ink); }
+.year-chip:hover { box-shadow: 3px 3px 0 var(--color-ink); }
+
+/* Painel da História */
+.admin-history__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3) var(--space-4); margin-bottom: var(--space-3); }
+.admin-history__bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4); margin-bottom: var(--space-5); }
+.admin-history__bar .field { min-width: 10rem; }
+.datefield { border: 0; padding: 0; margin: 0; }
+.datefield__row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.datefield__row .input { flex: 1 1 10rem; width: auto; }
+.datefield__precision { flex: 0 1 12rem; }
+.photos-field { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--space-3); }
+.photos-field__item { border: var(--border); border-radius: var(--radius-sm); overflow: hidden; background: var(--color-white); }
+.photos-field__item img { width: 100%; height: 6.5rem; object-fit: cover; }
+.photos-field__actions { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; }
