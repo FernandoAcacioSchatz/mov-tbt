@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { optionalImage, optionalText, requiredImage, requiredText } from './common';
+import { optionalImage, optionalText, optionalUrl, requiredImage, requiredText } from './common';
 import { LOCAL_IMAGE_RE } from '../utils/url';
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Informe uma data válida.');
@@ -44,3 +44,20 @@ export const historyClippingSchema = z.object({
   caption: optionalText(200),
 });
 export type HistoryClippingValues = z.input<typeof historyClippingSchema>;
+
+export const MEDIA_TYPES = ['materia', 'video', 'foto', 'postagem', 'link'] as const;
+
+export const historyMediaSchema = z.object({
+  title: requiredText(200, 'Título'),
+  media_type: z.enum(MEDIA_TYPES, { error: 'Escolha o tipo.' }),
+  outlet: optionalText(120),
+  event_date: isoDate,
+  date_precision: precision,
+  url: optionalUrl,
+  video_url: optionalUrl,
+  image_url: optionalImage,
+  photos: z.array(photoUrl).max(80, 'Máximo de 80 fotos.'),
+  body: optionalText(5000),
+  published: z.boolean(),
+});
+export type HistoryMediaValues = z.input<typeof historyMediaSchema>;

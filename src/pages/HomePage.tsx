@@ -6,6 +6,7 @@ import { Hero } from '../sections/Hero';
 import { About } from '../sections/About';
 import { Agenda } from '../sections/Agenda';
 import { Stories } from '../sections/Stories';
+import { InTheMedia } from '../sections/InTheMedia';
 import { Media } from '../sections/Media';
 import { Cast } from '../sections/Cast';
 import { Contact } from '../sections/Contact';
@@ -49,12 +50,14 @@ export function HomePage({ admin = false }: { admin?: boolean }) {
           <>
             <SectionEditor section="inicio" admin={admin} />
             <Hero />
-            <SectionEditor section="agenda" admin={admin} />
-            <Agenda />
             <SectionEditor section="sobre" admin={admin} />
             <About />
+            <SectionEditor section="agenda" admin={admin} />
+            <Agenda />
             <SectionEditor section="historia" admin={admin} />
             <Stories />
+            <SectionEditor section="namidia" admin={admin} />
+            <InTheMedia />
             <SectionEditor section="midias" admin={admin} />
             <Media />
             <SectionEditor section="integrantes" admin={admin} />

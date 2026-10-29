@@ -5,13 +5,14 @@ import { HistoryItemForm, NEW_LABEL, type HistoryRow } from '../admin/HistoryIte
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { deleteHistoryItem, fetchHistoryYears, fetchYearAll, HISTORY_TABLES, saveIntro } from '../services/historyService';
 import { formatPreciseDate, todayBR } from '../utils/dates';
-import { thumbUrl } from '../components/history/historyUtils';
+import { MEDIA_TYPE_LABEL, mediaCover, thumbUrl } from '../components/history/historyUtils';
 import type { HistoryKind, HistoryYear } from '../types/content';
 
 type YearData = Awaited<ReturnType<typeof fetchYearAll>>;
 const KINDS: { kind: HistoryKind; label: string }[] = [
-  { kind: 'postagens', label: 'Postagens' }, { kind: 'filipetas', label: 'Filipetas' }, { kind: 'clipagens', label: 'Clipagens' },
+  { kind: 'postagens', label: 'Postagens' }, { kind: 'filipetas', label: 'Filipetas' }, { kind: 'clipagens', label: 'Clipagens' }, { kind: 'midia', label: 'Na mídia' },
 ];
+const rowsOf = (d: YearData, k: HistoryKind) => ({ postagens: d.posts, filipetas: d.flyers, clipagens: d.clippings, midia: d.media })[k];
 
 export function AdminHistoryPage() {
   useDocumentTitle('História (edição) — Movimento TBT');
@@ -41,7 +42,8 @@ export function AdminHistoryPage() {
 
   const data = loaded?.year === year ? loaded.data : null;
   const introKey = `${year}-${kind}`;
-  const intro = kind === 'postagens' ? '' : introDrafts[introKey] ?? data?.intros[kind] ?? '';
+  const introKind = kind === 'filipetas' || kind === 'clipagens' ? kind : null;
+  const intro = !introKind ? '' : introDrafts[introKey] ?? data?.intros[introKind] ?? '';
   const setIntro = (v: string) => setIntroDrafts((d) => ({ ...d, [introKey]: v }));
 
   // Abre direto no último ano com conteúdo, para não começar numa tela vazia.
@@ -49,8 +51,8 @@ export function AdminHistoryPage() {
     void fetchHistoryYears().then((c) => { const last = c.at(-1); if (last) setYear(last.year); }).catch(() => undefined);
   }, []);
 
-  const rows: HistoryRow[] = !data ? [] : kind === 'postagens' ? data.posts : kind === 'filipetas' ? data.flyers : data.clippings;
-  const count = (y: number) => { const c = counts.find((x) => x.year === y); return c ? c.postagens + c.filipetas + c.clipagens : 0; };
+  const rows: HistoryRow[] = data ? rowsOf(data, kind) : [];
+  const count = (y: number) => { const c = counts.find((x) => x.year === y); return c ? c.postagens + c.filipetas + c.clipagens + c.midia : 0; };
 
   const done = (savedYear: number, msg: string) => {
     setEditing(null); setToast({ text: msg, ok: true });
@@ -98,7 +100,7 @@ export function AdminHistoryPage() {
             {KINDS.map((k) => (
               <button key={k.kind} type="button" role="tab" aria-selected={kind === k.kind} className="filter" aria-pressed={kind === k.kind}
                 onClick={() => { setKind(k.kind); setEditing(null); setConfirm(null); }}>
-                {k.label}{data ? ` · ${(k.kind === 'postagens' ? data.posts : k.kind === 'filipetas' ? data.flyers : data.clippings).length}` : ''}
+                {k.label}{data ? ` · ${rowsOf(data, k.kind).length}` : ''}
               </button>
             ))}
           </div>
@@ -115,8 +117,10 @@ export function AdminHistoryPage() {
               row={editing === 'new' ? undefined : editing} onDone={done} onCancel={() => setEditing(null)} />
           )}
 
-          {kind !== 'postagens' && data && (
-            <form className="field" onSubmit={(e) => { e.preventDefault(); void saveIntro(year, kind, intro).then(() => setToast({ text: 'Texto de abertura salvo.', ok: true })).catch((err: unknown) => setToast({ text: err instanceof Error ? err.message : 'Erro ao salvar.', ok: false })); }}>
+          {kind === 'midia' && <p className="ed-hint">Estes itens são os mesmos da seção Mídias da página inicial: editar ou excluir aqui muda lá também.</p>}
+
+          {introKind && data && (
+            <form className="field" onSubmit={(e) => { e.preventDefault(); void saveIntro(year, introKind, intro).then(() => setToast({ text: 'Texto de abertura salvo.', ok: true })).catch((err: unknown) => setToast({ text: err instanceof Error ? err.message : 'Erro ao salvar.', ok: false })); }}>
               <label htmlFor="ah-intro">Texto de abertura das {kind} de {year} (opcional)</label>
               <textarea id="ah-intro" className="input" rows={4} value={intro} onChange={(e) => setIntro(e.target.value)} />
               <div><button type="submit" className="btn btn--outline btn--small">Salvar texto</button></div>
@@ -129,10 +133,10 @@ export function AdminHistoryPage() {
               {rows.map((r) => (
                 <li key={r.id} className="ed-row">
                   <div className="ed-row__date">{formatPreciseDate(r.event_date, r.date_precision)}</div>
-                  {'image_url' in r && <img className="image-field__preview" src={thumbUrl(r.image_url)} alt="" loading="lazy" />}
+                  {'image_url' in r && <img className="image-field__preview" src={'media_type' in r ? mediaCover(r) : thumbUrl(r.image_url)} alt="" loading="lazy" />}
                   <div className="ed-row__main">
                     <strong>{label(r)}</strong>
-                    <span>{'group_name' in r ? [r.group_name, r.city].filter(Boolean).join(' · ') : 'newspaper' in r ? r.newspaper ?? '' : ''}</span>
+                    <span>{'group_name' in r ? [r.group_name, r.city].filter(Boolean).join(' · ') : 'newspaper' in r ? r.newspaper ?? '' : 'media_type' in r ? [MEDIA_TYPE_LABEL[r.media_type], r.outlet].filter(Boolean).join(' · ') : ''}</span>
                   </div>
                   {'published' in r && !r.published && <span className="chip ed-row__chip">Oculta</span>}
                   {confirm === r.id ? (

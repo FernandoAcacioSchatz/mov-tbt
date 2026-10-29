@@ -4,6 +4,7 @@ import { useEditMode, type SectionKey } from '../hooks/useEditMode';
 import { RESOURCES, SECTIONS } from './config';
 import { TextFieldsEditor } from './TextFieldsEditor';
 import { ResourceEditor } from './ResourceEditor';
+import { MediaEditor } from './MediaEditor';
 
 /** Painel que se abre acima da seção quando se clica em “Editar”. */
 export function SectionEditor({ section }: { section: SectionKey }) {
@@ -39,8 +40,9 @@ function Panel({ section }: { section: SectionKey }) {
         {toast && <div role={toast.ok ? 'status' : 'alert'} className={toast.ok ? 'ed-toast' : 'ed-toast ed-toast--err'}>{toast.text}</div>}
         <TextFieldsEditor fields={def.texts} onMessage={onMessage} />
         {section === 'historia' && (
-          <div className="ed-card"><Link className="btn btn--outline" to="/admin/historia">Abrir editor da História (postagens, filipetas e clipagens por ano) →</Link></div>
+          <div className="ed-card"><Link className="btn btn--outline" to="/admin/historia">Abrir editor da História (postagens, filipetas, clipagens e na mídia, por ano) →</Link></div>
         )}
+        {section === 'namidia' && <MediaEditor onMessage={onMessage} />}
         {section === 'contato' && (
           <div className="ed-card"><Link className="btn btn--outline" to="/admin/mensagens">Abrir caixa de mensagens recebidas →</Link></div>
         )}

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 
-export type SectionKey = 'inicio' | 'sobre' | 'agenda' | 'historia' | 'midias' | 'integrantes' | 'contato' | 'rodape';
+export type SectionKey = 'inicio' | 'sobre' | 'agenda' | 'historia' | 'namidia' | 'midias' | 'integrantes' | 'contato' | 'rodape';
 
 interface EditState {
   /** true na rota /admin: mostra os botões “Editar”. */

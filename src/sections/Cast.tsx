@@ -10,6 +10,8 @@ export function Cast() {
   const { content } = useContent();
   const t = useTexts();
   const members = content?.members ?? [];
+  // colunas que equilibram as linhas (até 5 por linha): 10 → 5 + 5, 8 → 4 + 4, 7 → 4 + 3
+  const cols = members.length ? Math.ceil(members.length / Math.ceil(members.length / 5)) : 1;
 
   // cartão aberto no painel (índice); o painel mostra a bio completa e o link
   const [open, setOpen] = useState<number | null>(null);
@@ -35,7 +37,7 @@ export function Cast() {
         {members.length === 0 ? (
           <p className="empty">Em breve.</p>
         ) : (
-          <ul className="cast-grid" aria-label="Integrantes do movimento">
+          <ul className="cast-grid" aria-label="Integrantes do movimento" style={{ ['--cast-cols-wide' as string]: cols }}>
             {members.map((m, i) => {
               const color = accentColor(i);
               const photo = safeUrl(m.photo_url);

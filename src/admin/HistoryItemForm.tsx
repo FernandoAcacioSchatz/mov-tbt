@@ -3,17 +3,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ImageField } from './ImageField';
 import { HistoryDateField } from './HistoryDateField';
 import { PhotosField } from './PhotosField';
-import { historyClippingSchema, historyFlyerSchema, historyPostSchema } from '../schemas/historySchemas';
+import { historyClippingSchema, historyFlyerSchema, historyMediaSchema, historyPostSchema, MEDIA_TYPES } from '../schemas/historySchemas';
+import { MEDIA_TYPE_LABEL } from '../components/history/historyUtils';
 import { historyDateProblem, normalizeToPrecision, slugify, todayBR, type DatePrecision } from '../utils/dates';
 import { HISTORY_TABLES, saveHistoryItem } from '../services/historyService';
-import type { HistoryClipping, HistoryFlyer, HistoryKind, HistoryPost } from '../types/content';
+import type { HistoryClipping, HistoryFlyer, HistoryKind, HistoryMedia, HistoryPost } from '../types/content';
 
 type Values = Record<string, unknown>;
-export type HistoryRow = HistoryPost | HistoryFlyer | HistoryClipping;
+export type HistoryRow = HistoryPost | HistoryFlyer | HistoryClipping | HistoryMedia;
 
-export const NEW_LABEL: Record<HistoryKind, string> = { postagens: 'Nova postagem', filipetas: 'Nova filipeta', clipagens: 'Nova clipagem' };
+export const NEW_LABEL: Record<HistoryKind, string> = { postagens: 'Nova postagem', filipetas: 'Nova filipeta', clipagens: 'Nova clipagem', midia: 'Nova postagem na mídia' };
+const ONE_LABEL: Record<HistoryKind, string> = { postagens: 'postagem', filipetas: 'filipeta', clipagens: 'clipagem', midia: 'postagem na mídia' };
 
-const SCHEMAS = { postagens: historyPostSchema, filipetas: historyFlyerSchema, clipagens: historyClippingSchema };
+const SCHEMAS = { postagens: historyPostSchema, filipetas: historyFlyerSchema, clipagens: historyClippingSchema, midia: historyMediaSchema };
 
 function defaults(kind: HistoryKind, year: number, row?: HistoryRow): Values {
   const today = todayBR();
@@ -28,11 +30,17 @@ function defaults(kind: HistoryKind, year: number, row?: HistoryRow): Values {
       ...(r ? { ...pick(r, ['title', 'event_date', 'date_precision', 'date_label', 'group_name', 'city', 'venue', 'body', 'cover_url']), photos: (r.photos as string[]) ?? [], published: r.published !== false } : {}),
     };
   }
+  if (kind === 'midia') {
+    return {
+      ...common, title: '', media_type: 'materia', outlet: '', url: '', video_url: '', image_url: '', body: '', photos: [], published: true,
+      ...(r ? { ...pick(r, ['title', 'media_type', 'outlet', 'event_date', 'date_precision', 'url', 'video_url', 'image_url', 'body']), photos: (r.photos as string[]) ?? [], published: r.published !== false } : {}),
+    };
+  }
   if (kind === 'filipetas') return { ...common, image_url: '', caption: '', ...(r ? pick(r, ['event_date', 'date_precision', 'image_url', 'caption']) : {}) };
   return { ...common, image_url: '', newspaper: '', caption: '', ...(r ? pick(r, ['event_date', 'date_precision', 'image_url', 'newspaper', 'caption']) : {}) };
 }
 
-/** Formulário de UM tipo de item da História (postagem, filipeta ou clipagem). */
+/** Formulário de UM tipo de item da História (postagem, filipeta, clipagem ou na mídia). */
 export function HistoryItemForm({ kind, year, row, onDone, onCancel }: {
   kind: HistoryKind;
   year: number;
@@ -60,7 +68,10 @@ export function HistoryItemForm({ kind, year, row, onDone, onCancel }: {
     if (kind === 'postagens' && !row) payload.slug = `${slugify(String(values.title))}-${date.slice(0, 7)}`;
     try {
       await saveHistoryItem(HISTORY_TABLES[kind], row?.id ?? null, payload);
-      onDone(Number(date.slice(0, 4)), row ? 'Salvo. A História já foi atualizada.' : 'Cadastrado. Já aparece na História, na posição da data.');
+      const msg = kind === 'midia'
+        ? (row ? `Salvo. Mídias e História de ${date.slice(0, 4)} já foram atualizadas.` : `Cadastrado. Já aparece em Mídias e na História de ${date.slice(0, 4)}.`)
+        : (row ? 'Salvo. A História já foi atualizada.' : 'Cadastrado. Já aparece na História, na posição da data.');
+      onDone(Number(date.slice(0, 4)), msg);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Não foi possível salvar.';
       setError('root', { message: msg.includes('já existe') ? 'Já existe uma postagem com esse título nesse ano. Mude o título.' : msg });
@@ -84,10 +95,22 @@ export function HistoryItemForm({ kind, year, row, onDone, onCancel }: {
 
   return (
     <form className="ed-form" onSubmit={(e) => void handleSubmit(onSubmit)(e)} noValidate aria-label={row ? `Editar ${kind}` : NEW_LABEL[kind]}>
-      <h3>{row ? `Editar ${kind === 'postagens' ? 'postagem' : kind === 'filipetas' ? 'filipeta' : 'clipagem'}` : NEW_LABEL[kind]}</h3>
+      <h3>{row ? `Editar ${ONE_LABEL[kind]}` : NEW_LABEL[kind]}</h3>
 
       {kind === 'postagens' && text('title', 'Título (ex.: Sujos — Grupo K - Teatro)')}
-      {kind !== 'postagens' && image('image_url', kind === 'filipetas' ? 'Imagem da filipeta' : 'Imagem do recorte de jornal')}
+      {kind === 'midia' && (
+        <>
+          {text('title', 'Título (ex.: Temporada de teatro movimenta Blumenau)')}
+          <div className="field">
+            <label htmlFor={`${id}-media_type`}>Tipo</label>
+            <select id={`${id}-media_type`} className="input" {...register('media_type')}>
+              {MEDIA_TYPES.map((m) => <option key={m} value={m}>{MEDIA_TYPE_LABEL[m]}</option>)}
+            </select>
+          </div>
+          {text('outlet', 'Veículo (ex.: Jornal de Santa Catarina, NSC TV, Instagram)')}
+        </>
+      )}
+      {(kind === 'filipetas' || kind === 'clipagens') && image('image_url', kind === 'filipetas' ? 'Imagem da filipeta' : 'Imagem do recorte de jornal')}
 
       <HistoryDateField idPrefix={id} control={control} setValue={setValue} error={err('event_date')} />
 
@@ -99,6 +122,18 @@ export function HistoryItemForm({ kind, year, row, onDone, onCancel }: {
           {text('venue', 'Local (ex.: Fundação Cultural de Blumenau)')}
           {text('body', 'Texto completo (sinopse, ficha técnica…)', { area: 12, hint: 'Deixe uma linha em branco entre parágrafos.' })}
           {image('cover_url', 'Imagem de capa')}
+          <PhotosField id={id} control={control} setValue={setValue} error={err('photos')} />
+          <div className="field">
+            <label className="check" htmlFor={`${id}-published`}><input id={`${id}-published`} type="checkbox" {...register('published')} /><span>Publicada no site</span></label>
+          </div>
+        </>
+      )}
+      {kind === 'midia' && (
+        <>
+          {text('url', 'Link da publicação (opcional)', { hint: 'Endereço da matéria, do post ou da página. Comece com https://' })}
+          {text('video_url', 'Link do vídeo (opcional)', { hint: 'YouTube, Instagram etc. Com YouTube, a capa sai sozinha se você não enviar uma imagem.' })}
+          {image('image_url', 'Imagem de capa (opcional)')}
+          {text('body', 'Texto (resumo, trecho da matéria…)', { area: 6, hint: 'Deixe uma linha em branco entre parágrafos.' })}
           <PhotosField id={id} control={control} setValue={setValue} error={err('photos')} />
           <div className="field">
             <label className="check" htmlFor={`${id}-published`}><input id={`${id}-published`} type="checkbox" {...register('published')} /><span>Publicada no site</span></label>

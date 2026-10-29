@@ -88,7 +88,7 @@ export type ContactSubject = (typeof CONTACT_SUBJECTS)[number];
 // ---------- História (linha do tempo por ano) ----------
 
 export type DatePrecision = 'day' | 'month' | 'year';
-export type HistoryKind = 'postagens' | 'filipetas' | 'clipagens';
+export type HistoryKind = 'postagens' | 'filipetas' | 'clipagens' | 'midia';
 
 export interface HistoryPost {
   id: string;
@@ -125,6 +125,26 @@ export interface HistoryClipping {
   position: number;
 }
 
+export type MediaType = 'materia' | 'video' | 'foto' | 'postagem' | 'link';
+
+/** TBT na mídia: aparece na seção Mídias e, por ano, na História (categoria "Na mídia"). */
+export interface HistoryMedia {
+  id: string;
+  event_date: string;
+  date_precision: DatePrecision;
+  title: string;
+  media_type: MediaType;
+  /** veículo: jornal, TV, site, perfil… */
+  outlet: string | null;
+  /** endereço da publicação original */
+  url: string | null;
+  video_url: string | null;
+  image_url: string | null;
+  photos: string[];
+  body: string | null;
+  published: boolean;
+}
+
 export interface HistoryIntro {
   year: number;
   kind: 'filipetas' | 'clipagens';
@@ -136,6 +156,7 @@ export interface HistoryYear {
   postagens: number;
   filipetas: number;
   clipagens: number;
+  midia: number;
   /** Capa do ano: foto da 1ª postagem (ou 1ª filipeta/clipagem). */
   cover_url: string | null;
 }
