@@ -117,3 +117,34 @@
 .photos-field__item { border: var(--border); border-radius: var(--radius-sm); overflow: hidden; background: var(--color-white); }
 .photos-field__item img { width: 100%; height: 6.5rem; object-fit: cover; }
 .photos-field__actions { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; }
+
+/* Mídias: a TBT na imprensa, na TV e nas redes (seção da página inicial, /midias e /historia/:ano/midia) */
+.media-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); gap: var(--space-5); }
+.media-grid__more { margin-top: var(--space-6); }
+.media-card { display: flex; flex-direction: column; height: 100%; overflow: hidden; background: var(--color-white); border: var(--border); border-radius: var(--radius-md); color: var(--color-ink); text-decoration: none; transition: box-shadow var(--transition), transform var(--transition); }
+.media-card:hover { box-shadow: 6px 6px 0 var(--color-ink); transform: translate(-2px, -2px); }
+.media-card__cover { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: var(--border); }
+.media-card__cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.media-card:hover .media-card__cover img { transform: scale(1.05); }
+.media-card__type { position: absolute; left: var(--space-3); top: var(--space-3); padding: 0.25rem 0.75rem; border-radius: 999px; border: var(--border); background: var(--color-white); font-size: var(--text-xs); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.media-card__play { position: absolute; left: 50%; top: 50%; translate: -50% -50%; display: inline-flex; align-items: center; justify-content: center; width: 3.25rem; height: 3.25rem; border-radius: 50%; border: var(--border); background: var(--color-yellow); font-size: 1.1rem; padding-left: 3px; }
+.media-card__body { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-4); flex: 1; }
+.media-card__outlet { font-size: var(--text-xs); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-magenta); }
+.media-card__title { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 800; line-height: 1.2; hyphens: manual; }
+.media-card__date { margin-top: auto; padding-top: var(--space-2); font-size: var(--text-sm); color: var(--color-muted); }
+.media-item__links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-4) 0 var(--space-6); }
+/* Mídias sem nada publicado: card de "em breve" */
+.media-empty { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6) var(--space-7); padding: clamp(1.75rem, 5vw, 3rem); background: var(--color-white); border: var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-yellow); }
+.media-empty__art { position: relative; flex: 0 0 auto; width: 15rem; height: 11rem; margin-inline: auto; }
+.media-empty__sheet { position: absolute; display: flex; flex-direction: column; gap: 0.5rem; width: 8.5rem; height: 9.5rem; padding: 1rem 0.875rem; border: var(--border); border-radius: var(--radius-md); background: var(--color-white); box-shadow: 4px 4px 0 var(--color-ink); }
+.media-empty__sheet > span:not(.media-empty__play) { display: block; height: 0.5rem; border-radius: 999px; background: var(--color-line); }
+.media-empty__sheet > span:first-child:not(.media-empty__play) { height: 2.25rem; border-radius: 0.5rem; background: currentColor; }
+.media-empty__sheet > span:last-child:not(.media-empty__play) { width: 65%; }
+.media-empty__sheet--1 { left: 0; top: 1rem; rotate: -8deg; color: var(--color-teal); }
+.media-empty__sheet--2 { left: 3.5rem; top: 0; rotate: 3deg; color: var(--color-pink); z-index: 1; }
+.media-empty__sheet--3 { right: 0; top: 1.75rem; rotate: 10deg; align-items: center; justify-content: center; background: var(--color-yellow); z-index: 2; width: 6.5rem; height: 6.5rem; }
+.media-empty__play { display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; border: var(--border); background: var(--color-white); font-size: 1rem; padding-left: 3px; }
+.media-empty__body { flex: 1 1 22rem; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+.media-empty__kicker { padding: 0.375rem 0.875rem; border-radius: 999px; border: var(--border); background: var(--color-magenta); color: var(--color-white); font-size: var(--text-xs); font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+.media-empty__title { margin: 0; font-family: var(--font-display); font-size: clamp(1.5rem, 3.2vw, 2.125rem); font-weight: 800; line-height: 1.1; hyphens: manual; color: var(--color-ink); }
+.media-empty__text { margin: 0; max-width: 36rem; font-size: var(--text-md); line-height: 1.6; color: var(--color-ink-soft); }

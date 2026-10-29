@@ -22,6 +22,11 @@ const HistoryPostsPage = lazy(() => history().then((m) => ({ default: m.HistoryP
 const HistoryPostPage = lazy(() => history().then((m) => ({ default: m.HistoryPostPage })));
 const HistoryFlyersPage = lazy(() => history().then((m) => ({ default: () => <m.HistoryGalleryPage kind="filipetas" /> })));
 const HistoryClippingsPage = lazy(() => history().then((m) => ({ default: () => <m.HistoryGalleryPage kind="clipagens" /> })));
+const HistoryMediaPage = lazy(() => history().then((m) => ({ default: m.HistoryMediaPage })));
+// Mídias: a página com todas e a de cada item.
+const media = () => import('../pages/MediaPages');
+const MediaIndexPage = lazy(() => media().then((m) => ({ default: m.MediaIndexPage })));
+const MediaItemPage = lazy(() => media().then((m) => ({ default: m.MediaItemPage })));
 // A HomePage já está no pacote principal; o código do painel de edição dela é que carrega sob demanda.
 const AdminHome = () => <HomePage admin />;
 
@@ -37,6 +42,9 @@ export function App() {
       <Route path="/historia/:ano/postagens/:slug" element={<HistoryPostPage />} />
       <Route path="/historia/:ano/filipetas" element={<HistoryFlyersPage />} />
       <Route path="/historia/:ano/clipagens" element={<HistoryClippingsPage />} />
+      <Route path="/historia/:ano/midia" element={<HistoryMediaPage />} />
+      <Route path="/midias" element={<MediaIndexPage />} />
+      <Route path="/midias/:id" element={<MediaItemPage />} />
       <Route path="/login" element={<><NoIndex /><LoginPage /></>} />
       <Route path="/recuperar-senha" element={<><NoIndex /><RecoverPasswordPage /></>} />
       <Route path="/redefinir-senha" element={<><NoIndex /><ResetPasswordPage /></>} />

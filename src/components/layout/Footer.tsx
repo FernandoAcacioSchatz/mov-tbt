@@ -22,8 +22,9 @@ export function Footer({ adminMode = false }: { adminMode?: boolean }) {
           {SOCIALS.map(({ label, key, color, path }) => {
             const url = safeUrl(t(key));
             return url && (
-              <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="footer__social" style={{ background: color }} aria-label={`${label} (abre em nova aba)`} title={label}>
-                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d={path} fill="currentColor" /></svg>
+              <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="footer__social" style={{ ['--social' as string]: color }} aria-label={`${label} (abre em nova aba)`} title={label}>
+                {/* só o ícone, sem fundo: ganha a cor da rede ao passar o mouse */}
+                <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false"><path d={path} fill="currentColor" /></svg>
               </a>
             );
           })}

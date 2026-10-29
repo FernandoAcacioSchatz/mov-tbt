@@ -1,12 +1,13 @@
 import { supabase } from './supabaseClient';
 import { friendlyError } from './errors';
-import type { HistoryClipping, HistoryFlyer, HistoryIntro, HistoryPost, HistoryYear } from '../types/content';
+import type { HistoryClipping, HistoryFlyer, HistoryIntro, HistoryMedia, HistoryPost, HistoryYear } from '../types/content';
 
 /** Tabelas da História. A ordem é SEMPRE pela data do acontecimento — nunca manual. */
 export const HISTORY_TABLES = {
   postagens: 'history_posts',
   filipetas: 'history_flyers',
   clipagens: 'history_clippings',
+  midia: 'history_media',
 } as const;
 export type HistoryTable = (typeof HISTORY_TABLES)[keyof typeof HISTORY_TABLES];
 
@@ -46,6 +47,35 @@ export async function fetchYearClippings(year: number): Promise<HistoryClipping[
     .order('event_date', { ascending: true }).order('position', { ascending: true }).order('created_at', { ascending: true });
   if (error) throw friendlyError(error, 'Não foi possível carregar as clipagens.');
   return (data ?? []) as HistoryClipping[];
+}
+
+export async function fetchYearMedia(year: number): Promise<HistoryMedia[]> {
+  const { from, to } = yearRange(year);
+  const { data, error } = await supabase.from('history_media').select('*')
+    .gte('event_date', from).lte('event_date', to)
+    .order('event_date', { ascending: true }).order('title', { ascending: true });
+  if (error) throw friendlyError(error, 'Não foi possível carregar as mídias.');
+  return (data ?? []) as HistoryMedia[];
+}
+
+/** TBT na mídia, das mais recentes para as mais antigas (seção Mídias e página /midias). Admin também vê as ocultas. */
+export async function fetchMedia(limit?: number): Promise<HistoryMedia[]> {
+  let q = supabase.from('history_media').select('*')
+    .order('event_date', { ascending: false }).order('created_at', { ascending: false });
+  if (limit) q = q.limit(limit);
+  const { data, error } = await q;
+  if (error) throw friendlyError(error, 'Não foi possível carregar as mídias.');
+  return (data ?? []) as HistoryMedia[];
+}
+
+/** Evento disparado pelo painel quando as Mídias mudam (a seção da página inicial busca de novo). */
+export const MEDIA_CHANGED = 'tbt:midias-alteradas';
+
+export async function fetchMediaItem(id: string): Promise<HistoryMedia | null> {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  const { data, error } = await supabase.from('history_media').select('*').eq('id', id).maybeSingle();
+  if (error) throw friendlyError(error, 'Não foi possível carregar a mídia.');
+  return data as HistoryMedia | null;
 }
 
 export async function fetchIntro(year: number, kind: HistoryIntro['kind']): Promise<string | null> {
@@ -99,8 +129,8 @@ export async function saveIntro(year: number, kind: HistoryIntro['kind'], body: 
 
 /** Usado pelo admin para listar tudo de um ano, inclusive postagens ocultas. */
 export async function fetchYearAll(year: number) {
-  const [posts, flyers, clippings, flyersIntro, clippingsIntro] = await Promise.all([
-    fetchYearPosts(year), fetchYearFlyers(year), fetchYearClippings(year), fetchIntro(year, 'filipetas'), fetchIntro(year, 'clipagens'),
+  const [posts, flyers, clippings, media, flyersIntro, clippingsIntro] = await Promise.all([
+    fetchYearPosts(year), fetchYearFlyers(year), fetchYearClippings(year), fetchYearMedia(year), fetchIntro(year, 'filipetas'), fetchIntro(year, 'clipagens'),
   ]);
-  return { posts, flyers, clippings, intros: { filipetas: flyersIntro ?? '', clipagens: clippingsIntro ?? '' } };
+  return { posts, flyers, clippings, media, intros: { filipetas: flyersIntro ?? '', clipagens: clippingsIntro ?? '' } };
 }

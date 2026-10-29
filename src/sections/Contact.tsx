@@ -80,6 +80,7 @@ export function Contact() {
             </div>
           ) : (
             <>
+              <div className="form__row">
               <div className="field">
                 <label htmlFor="f-nome">Nome</label>
                 <input id="f-nome" className="input" type="text" autoComplete="name" aria-invalid={!!errors.name} aria-describedby={errors.name ? 'f-nome-err' : undefined} {...register('name')} />
@@ -89,6 +90,7 @@ export function Contact() {
                 <label htmlFor="f-email">E-mail</label>
                 <input id="f-email" className="input" type="email" autoComplete="email" aria-invalid={!!errors.email} aria-describedby={errors.email ? 'f-email-err' : undefined} {...register('email')} />
                 {errors.email && <span id="f-email-err" className="field__error" role="alert">{err('email')}</span>}
+              </div>
               </div>
               <div className="field">
                 <label htmlFor="f-assunto">Assunto</label>

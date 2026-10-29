@@ -7,6 +7,7 @@ function counts(y: HistoryYear): string {
     y.postagens && `${y.postagens} ${y.postagens === 1 ? 'postagem' : 'postagens'}`,
     y.filipetas && `${y.filipetas} ${y.filipetas === 1 ? 'filipeta' : 'filipetas'}`,
     y.clipagens && `${y.clipagens} ${y.clipagens === 1 ? 'clipagem' : 'clipagens'}`,
+    y.midia && `${y.midia} na mídia`,
   ].filter(Boolean).join(' · ');
 }
 

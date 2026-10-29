@@ -7,8 +7,8 @@ import { useContent } from '../../hooks/useContent';
 import { useTexts } from '../../hooks/useTexts';
 
 const MENU = [
-  ['Agenda', 'agenda'], ['Sobre', 'sobre'], ['História', 'historia'],
-  ['Mídias', 'midias'], ['Integrantes', 'integrantes'], ['Contato', 'contato'],
+  ['Sobre', 'sobre'], ['Agenda', 'agenda'], ['História', 'historia'],
+  ['Mídias', 'na-midia'], ['Assista & ouça', 'midias'], ['Integrantes', 'integrantes'], ['Contato', 'contato'],
 ] as const;
 
 export function Header({ base = '' }: { base?: string }) {

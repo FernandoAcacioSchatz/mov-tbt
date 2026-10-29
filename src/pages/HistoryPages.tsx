@@ -2,12 +2,13 @@ import { Link, useParams } from 'react-router-dom';
 import { HistoryLayout, LoadingOrError } from '../components/history/HistoryLayout';
 import { Gallery } from '../components/history/Gallery';
 import { YearCard } from '../components/history/YearCard';
+import { MediaCard } from '../components/media/MediaCard';
 import { KIND_LABEL, paragraphs, parseYear, thumbUrl } from '../components/history/historyUtils';
 import { useLoad } from '../hooks/useLoad';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useTexts } from '../hooks/useTexts';
 import {
-  fetchHistoryYears, fetchIntro, fetchPostWithNeighbors, fetchYearClippings, fetchYearFlyers, fetchYearPosts,
+  fetchHistoryYears, fetchIntro, fetchPostWithNeighbors, fetchYearClippings, fetchYearFlyers, fetchYearMedia, fetchYearPosts,
 } from '../services/historyService';
 import { formatPreciseDate } from '../utils/dates';
 import { safeUrl } from '../utils/url';
@@ -31,7 +32,7 @@ export function HistoryIndexPage() {
       <section className="container section history__section" aria-labelledby="h-title">
         <div className="kicker kicker--magenta">{t('historiaKicker') || 'História'}</div>
         <h1 id="h-title" className="h2">{t('historiaTitle') || 'Nossa história'}</h1>
-        <p className="lead history__lead">Escolha um ano para ver as postagens, as filipetas e as clipagens daquela temporada.</p>
+        <p className="lead history__lead">Escolha um ano para ver as postagens, as filipetas, as clipagens e o que saiu na mídia naquela temporada.</p>
         <LoadingOrError loading={years.loading} error={years.error} />
         {years.data?.length === 0 && <p className="empty">Em breve.</p>}
         <ul className="years-grid">
@@ -53,6 +54,7 @@ export function HistoryYearPage() {
     { kind: 'postagens', count: info.postagens, text: info.postagens === 1 ? 'espetáculo / acontecimento' : 'espetáculos e acontecimentos' },
     { kind: 'filipetas', count: info.filipetas, text: info.filipetas === 1 ? 'filipeta' : 'filipetas' },
     { kind: 'clipagens', count: info.clipagens, text: info.clipagens === 1 ? 'recorte de jornal' : 'recortes de jornal' },
+    { kind: 'midia', count: info.midia, text: info.midia === 1 ? 'aparição na mídia' : 'aparições na mídia' },
   ].filter((d) => d.count > 0) as { kind: HistoryKind; count: number; text: string }[] : [];
 
   return (
@@ -188,6 +190,28 @@ export function HistoryGalleryPage({ kind }: { kind: 'filipetas' | 'clipagens' }
         )}
         {data.data?.items.length === 0 && <p className="empty">Nada cadastrado aqui em {year}.</p>}
         {data.data && data.data.items.length > 0 && <Gallery items={data.data.items} label={`${KIND_LABEL[kind]} de ${year}`} />}
+      </section>
+    </HistoryLayout>
+  );
+}
+
+/** /historia/:ano/midia — o que saiu sobre a TBT na mídia naquele ano (os mesmos itens da seção Mídias). */
+export function HistoryMediaPage() {
+  const year = parseYear(useParams().ano);
+  useDocumentTitle(`Na mídia em ${year ?? ''} — ${SITE}`);
+  const res = useLoad(() => (year ? fetchYearMedia(year) : Promise.resolve([])), [year]);
+  if (year === null) return <NotFoundPage />;
+  const items = (res.data ?? []).filter((m) => m.published);
+  return (
+    <HistoryLayout crumbs={[{ label: 'História', to: '/historia' }, { label: String(year), to: `/historia/${year}` }, { label: KIND_LABEL.midia }]} year={year}>
+      <section className="container section history__section" aria-labelledby="hm-title">
+        <div className="kicker kicker--magenta">{year}</div>
+        <h1 id="hm-title" className="h2">{KIND_LABEL.midia}</h1>
+        <LoadingOrError loading={res.loading} error={res.error} />
+        {res.data && items.length === 0 && <p className="empty">Nada cadastrado aqui em {year}.</p>}
+        <ul className="media-grid" aria-label={`Na mídia em ${year}`}>
+          {items.map((m, i) => <li key={m.id}><MediaCard item={m} color={accentColor(i)} /></li>)}
+        </ul>
       </section>
     </HistoryLayout>
   );
