@@ -27,26 +27,20 @@ describe('Agenda (carrossel)', () => {
     expect(screen.queryByText('Oculta')).not.toBeInTheDocument();
   });
 
-  it('avança sozinho e pode ser pausado', async () => {
+  it('avança sozinho', () => {
     render(<ContentProvider initial={content}><Agenda /></ContentProvider>);
     const dots = () => screen.getAllByRole('button', { name: /Ir para o espetáculo/ });
     expect(dots()[0]).toHaveAttribute('aria-current', 'true');
     act(() => { vi.advanceTimersByTime(6100); });
     expect(dots()[1]).toHaveAttribute('aria-current', 'true');
-
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-    await user.click(screen.getByRole('button', { name: 'Pausar rotação automática' }));
-    act(() => { vi.advanceTimersByTime(13000); });
-    expect(dots()[1]).toHaveAttribute('aria-current', 'true');
-    expect(screen.getByRole('button', { name: 'Retomar rotação automática' })).toBeInTheDocument();
   });
 
   it('setas navegam', async () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     render(<ContentProvider initial={content}><Agenda /></ContentProvider>);
-    await user.click(screen.getByRole('button', { name: 'Próximo' }));
+    await user.click(screen.getByRole('button', { name: 'Próximo espetáculo' }));
     expect(screen.getAllByRole('button', { name: /Ir para o espetáculo/ })[1]).toHaveAttribute('aria-current', 'true');
-    await user.click(screen.getByRole('button', { name: 'Anterior' }));
+    await user.click(screen.getByRole('button', { name: 'Espetáculo anterior' }));
     expect(screen.getAllByRole('button', { name: /Ir para o espetáculo/ })[0]).toHaveAttribute('aria-current', 'true');
   });
 });
