@@ -37,6 +37,20 @@ function json(body: unknown, status: number, origin: string | null) {
   });
 }
 
+// Limite de requisições por administrador (F-03). Best-effort por instância da função:
+// o Deno Deploy reaproveita a instância por um tempo, então isto trava laços rápidos
+// de um mesmo admin. A barreira principal continua sendo JWT + conferência de admin.
+const RATE_MAX = 30; // requisições
+const RATE_WINDOW_MS = 60_000; // por minuto
+const hits = new Map<string, number[]>();
+function rateLimited(userId: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(userId) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  recent.push(now);
+  hits.set(userId, recent);
+  return recent.length > RATE_MAX;
+}
+
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 function passwordProblem(p: string): string | null {
   if (p.length < 12) return "A senha precisa ter pelo menos 12 caracteres.";
@@ -51,7 +65,10 @@ Deno.serve(async (req: Request) => {
   const origin = req.headers.get("origin");
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders(origin) });
   if (req.method !== "POST") return json({ error: "Método não permitido." }, 405, origin);
-  if (origin && !isAllowed(origin)) return json({ error: "Origem não permitida." }, 403, origin);
+  // CORS estrito (F-02): exige uma origem conhecida. O navegador sempre envia o header
+  // Origin em chamadas cross-origin (a função fica em *.supabase.co), então o site legítimo
+  // nunca é bloqueado; requisições sem Origin (ex.: curl) passam a ser recusadas.
+  if (!isAllowed(origin)) return json({ error: "Origem não permitida." }, 403, origin);
 
   const authHeader = req.headers.get("Authorization") ?? "";
   if (!authHeader.startsWith("Bearer ")) return json({ error: "Não autenticado." }, 401, origin);
@@ -66,6 +83,9 @@ Deno.serve(async (req: Request) => {
   const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
   const { data: isAdminRow } = await admin.from("admins").select("user_id").eq("user_id", me.id).maybeSingle();
   if (!isAdminRow) return json({ error: "Acesso negado." }, 403, origin);
+
+  // 2.1) Limite de requisições por administrador (F-03)
+  if (rateLimited(me.id)) return json({ error: "Muitas requisições. Aguarde um instante." }, 429, origin);
 
   // 3) Entrada validada
   const raw = await req.text();

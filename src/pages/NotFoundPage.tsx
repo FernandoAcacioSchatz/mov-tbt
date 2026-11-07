@@ -6,7 +6,7 @@ export function NotFoundPage() {
   return (
     <main id="conteudo" className="container page">
       <h1 className="h2">Página não encontrada</h1>
-      <p className="lead" style={{ marginBlock: 'var(--space-4)' }}>O endereço que você abriu não existe.</p>
+      <p className="lead u-my-4">O endereço que você abriu não existe.</p>
       <Link className="btn btn--magenta" to="/">Voltar ao início</Link>
     </main>
   );

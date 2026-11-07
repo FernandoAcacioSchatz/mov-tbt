@@ -60,13 +60,13 @@ export function Contact() {
           {(validEmail || whatsNum.length >= 12 || local) && (
             <ul className="contact__direct">
               {validEmail && (
-                <li><a className="contact__item" href={`mailto:${email}`}><span className="contact__icon" style={{ background: 'var(--color-yellow)' }}>{ICON_MAIL}</span><span><small>E-mail</small>{email}</span></a></li>
+                <li><a className="contact__item" href={`mailto:${encodeURIComponent(email)}`}><span className="contact__icon contact__icon--mail">{ICON_MAIL}</span><span><small>E-mail</small>{email}</span></a></li>
               )}
               {whatsNum.length >= 12 && (
-                <li><a className="contact__item" href={`https://wa.me/${whatsNum}`} target="_blank" rel="noopener noreferrer"><span className="contact__icon" style={{ background: 'var(--color-teal)' }}>{ICON_WHATSAPP}</span><span><small>WhatsApp</small>{whats}</span></a></li>
+                <li><a className="contact__item" href={`https://wa.me/${whatsNum}`} target="_blank" rel="noopener noreferrer"><span className="contact__icon contact__icon--whats">{ICON_WHATSAPP}</span><span><small>WhatsApp</small>{whats}</span></a></li>
               )}
               {local && (
-                <li><div className="contact__item"><span className="contact__icon" style={{ background: 'var(--color-pink)' }}>{ICON_PIN}</span><span><small>Onde estamos</small>{local}</span></div></li>
+                <li><div className="contact__item"><span className="contact__icon contact__icon--pin">{ICON_PIN}</span><span><small>Onde estamos</small>{local}</span></div></li>
               )}
             </ul>
           )}

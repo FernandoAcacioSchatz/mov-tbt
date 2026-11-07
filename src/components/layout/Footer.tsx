@@ -8,7 +8,7 @@ import { SOCIALS } from '../../assets/socials';
 export function Footer({ adminMode = false }: { adminMode?: boolean }) {
   const t = useTexts();
   return (
-    <footer className="footer" style={{ position: 'relative' }}>
+    <footer className="footer u-relative">
       <EditButton section="rodape" />
       <div className="footer__inner">
         {/* "© AAAA" sempre com o ano atual, sem precisar editar o texto todo ano */}
@@ -19,10 +19,10 @@ export function Footer({ adminMode = false }: { adminMode?: boolean }) {
         </div>
         {/* logos das redes (links editáveis em Editar → Contato); some a que estiver sem link */}
         <div className="footer__socials">
-          {SOCIALS.map(({ label, key, color, path }) => {
+          {SOCIALS.map(({ label, key, path }) => {
             const url = safeUrl(t(key));
             return url && (
-              <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="footer__social" style={{ ['--social' as string]: color }} aria-label={`${label} (abre em nova aba)`} title={label}>
+              <a key={key} href={url} target="_blank" rel="noopener noreferrer" className={`footer__social footer__social--${key}`} aria-label={`${label} (abre em nova aba)`} title={label}>
                 {/* só o ícone, sem fundo: ganha a cor da rede ao passar o mouse */}
                 <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false"><path d={path} fill="currentColor" /></svg>
               </a>

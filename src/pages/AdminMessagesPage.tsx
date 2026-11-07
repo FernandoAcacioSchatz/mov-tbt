@@ -29,8 +29,8 @@ export function AdminMessagesPage() {
     <>
       <AdminBar />
       <main id="conteudo" className="container page">
-        <h1 className="h2" style={{ marginBottom: 'var(--space-5)' }}>Mensagens recebidas</h1>
-        <p className="ed-hint" style={{ marginBottom: 'var(--space-5)' }}>Por enquanto as mensagens chegam apenas aqui. O aviso por e-mail e WhatsApp será adicionado depois.</p>
+        <h1 className="h2 u-mb-5">Mensagens recebidas</h1>
+        <p className="ed-hint u-mb-5">Por enquanto as mensagens chegam apenas aqui. O aviso por e-mail e WhatsApp será adicionado depois.</p>
         {error && <p className="form__error" role="alert">{error}</p>}
         {items === null && !error && <p className="status" role="status">Carregando…</p>}
         {items?.length === 0 && <p className="empty">Nenhuma mensagem ainda.</p>}

@@ -46,10 +46,10 @@ export function AdminUsersPage() {
     <>
       <AdminBar />
       <main id="conteudo" className="container page">
-        <h1 className="h2" style={{ marginBottom: 'var(--space-5)' }}>Administradores</h1>
+        <h1 className="h2 u-mb-5">Administradores</h1>
         {msg && <p role={msg.ok ? 'status' : 'alert'} className={msg.ok ? 'ed-toast' : 'ed-toast ed-toast--err'}>{msg.text}</p>}
-        <form className="form" style={{ maxWidth: '32rem', marginBlock: 'var(--space-5)' }} onSubmit={(e) => void handleSubmit(onSubmit)(e)} noValidate aria-label="Novo administrador">
-          <h2 style={{ fontSize: '1.5rem' }}>Cadastrar novo administrador</h2>
+        <form className="form u-maxw-512 u-my-5" onSubmit={(e) => void handleSubmit(onSubmit)(e)} noValidate aria-label="Novo administrador">
+          <h2 className="u-fs-lg">Cadastrar novo administrador</h2>
           <div className="field">
             <label htmlFor="a-email">E-mail</label>
             <input id="a-email" className="input" type="email" autoComplete="off" aria-invalid={!!errors.email} {...register('email')} />
@@ -63,7 +63,7 @@ export function AdminUsersPage() {
           </div>
           <button type="submit" className="btn btn--magenta" disabled={isSubmitting}>{isSubmitting ? 'Cadastrando…' : 'Cadastrar'}</button>
         </form>
-        <h2 style={{ fontSize: '1.5rem', marginBottom: 'var(--space-3)' }}>Quem tem acesso</h2>
+        <h2 className="u-fs-lg u-mb-3">Quem tem acesso</h2>
         {admins === null ? <p className="status" role="status">Carregando…</p> : (
           <div className="table-wrap">
           <table className="table">

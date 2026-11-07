@@ -3,7 +3,7 @@ import { useContent } from '../hooks/useContent';
 import { useTexts } from '../hooks/useTexts';
 import { useScrollCarousel } from '../hooks/useScrollCarousel';
 import { EditButton } from '../components/ui/EditButton';
-import { dateParts, sortShows, todayISO, accentColor } from '../utils/format';
+import { dateParts, sortShows, todayISO, accentClass } from '../utils/format';
 import { safeUrl } from '../utils/url';
 import { Link } from 'react-router-dom';
 import { SafeLink } from '../components/ui/SafeLink';
@@ -26,9 +26,9 @@ export function Agenda() {
       <EditButton section="agenda" />
       <div className="container">
         <div className="section__head">
-          <h2 id="agenda-title" className="h2" style={{ marginBottom: 'var(--space-3)' }}>{t('agendaTitle')}</h2>
+          <h2 id="agenda-title" className="h2 u-mb-3">{t('agendaTitle')}</h2>
         </div>
-        <p className="lead" style={{ maxWidth: '38.75rem', marginBottom: 'var(--space-7)' }}>{t('agendaText')}</p>
+        <p className="lead u-maxw-620 u-mb-7">{t('agendaText')}</p>
 
         {shows.length === 0 ? (
           <div className="agenda-empty">
@@ -57,13 +57,13 @@ export function Agenda() {
             <div className="shows__stage">
               <div ref={setTrack} className="shows__track noscroll" onScroll={onScroll} aria-live={paused ? 'polite' : 'off'}>
                 {shows.map((s, i) => {
-                  const color = accentColor(i);
+                  const accent = accentClass(i);
                   const parts = dateParts(s.date);
                   const img = safeUrl(s.image_url);
                   const upcoming = s.date >= today;
                   return (
                     <article key={s.id} className="show" aria-roledescription="slide" aria-label={`${i + 1} de ${shows.length}`}>
-                      <div className="show__poster" style={{ background: color }}>
+                      <div className={`show__poster ${accent}`}>
                         {img ? (
                           <img src={img} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
                         ) : (
@@ -73,7 +73,7 @@ export function Agenda() {
                       </div>
                       <div className="show__info">
                         <div className="show__head">
-                          <div className="show__date" style={{ background: color }}>
+                          <div className={`show__date ${accent}`}>
                             <strong>{parts.day}</strong>
                             <span>{parts.month}</span>
                           </div>

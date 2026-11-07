@@ -14,7 +14,7 @@ import { useTexts } from '../hooks/useTexts';
 import { fetchMedia, fetchMediaItem } from '../services/historyService';
 import { formatPreciseDate } from '../utils/dates';
 import { safeUrl } from '../utils/url';
-import { accentColor } from '../utils/format';
+import { accentClass } from '../utils/format';
 import { NotFoundPage } from './NotFoundPage';
 
 const SITE = 'Movimento TBT';
@@ -58,7 +58,7 @@ export function MediaIndexPage() {
         <LoadingOrError loading={res.loading} error={res.error} />
         {res.data && items.length === 0 && <MediaEmpty />}
         <ul className="media-grid" aria-label="TBT na mídia">
-          {items.map((m, i) => <li key={m.id}><MediaCard item={m} color={accentColor(i)} /></li>)}
+          {items.map((m, i) => <li key={m.id}><MediaCard item={m} accent={accentClass(i)} /></li>)}
         </ul>
       </section>
     </MediaLayout>

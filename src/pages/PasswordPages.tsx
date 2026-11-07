@@ -46,7 +46,7 @@ export function RecoverPasswordPage() {
   return (
     <main id="conteudo" className="container page">
       <div className="login">
-        <h1 className="h2" style={{ marginBottom: 'var(--space-5)' }}>Recuperar senha</h1>
+        <h1 className="h2 u-mb-5">Recuperar senha</h1>
         <form className="form" onSubmit={(e) => void handleSubmit(onSubmit)(e)} noValidate aria-label="Recuperar senha">
           <p className="ed-hint">Informe o e-mail da sua conta de administrador. Enviaremos um link para você criar uma senha nova. O link vale por pouco tempo e só pode ser usado uma vez.</p>
           <div className="field">
@@ -64,7 +64,7 @@ export function RecoverPasswordPage() {
             {isSubmitting ? 'Enviando…' : remaining > 0 ? `Aguarde ${remaining}s para pedir de novo` : 'Enviar link'}
           </button>
         </form>
-        <p style={{ marginTop: 'var(--space-5)' }}><Link to="/login">← Voltar ao login</Link></p>
+        <p className="u-mt-5"><Link to="/login">← Voltar ao login</Link></p>
       </div>
     </main>
   );
@@ -103,7 +103,7 @@ export function ResetPasswordPage() {
   return (
     <main id="conteudo" className="container page">
       <div className="login">
-        <h1 className="h2" style={{ marginBottom: 'var(--space-5)' }}>Criar nova senha</h1>
+        <h1 className="h2 u-mb-5">Criar nova senha</h1>
         {state === null && <p className="status" role="status">Verificando o link…</p>}
         {state && !state.ok && (
           <div className="form">

@@ -3,7 +3,7 @@ import { useContent } from '../hooks/useContent';
 import { useTexts } from '../hooks/useTexts';
 import { EditButton } from '../components/ui/EditButton';
 import { SafeLink } from '../components/ui/SafeLink';
-import { accentColor } from '../utils/format';
+import { accentClass, accentN } from '../utils/format';
 import { safeUrl } from '../utils/url';
 
 export function Cast() {
@@ -24,22 +24,22 @@ export function Cast() {
   }, [open]);
 
   const current = open === null ? null : members[open];
-  const currentColor = open === null ? undefined : accentColor(open);
+  const currentAccent = open === null ? '' : `member__inner--accent-${accentN(open)}`;
   const currentPhoto = current ? safeUrl(current.photo_url) : null;
 
   return (
     <section id="integrantes" className="section" aria-labelledby="elenco-title">
       <EditButton section="integrantes" />
       <div className="container">
-        <div className="section__head" style={{ marginBottom: 'var(--space-6)' }}>
+        <div className="section__head u-mb-6">
           <h2 id="elenco-title" className="h2">{t('elencoTitle')}</h2>
         </div>
         {members.length === 0 ? (
           <p className="empty">Em breve.</p>
         ) : (
-          <ul className="cast-grid" aria-label="Integrantes do movimento" style={{ ['--cast-cols-wide' as string]: cols }}>
+          <ul className={`cast-grid cast-grid--cols-${cols}`} aria-label="Integrantes do movimento">
             {members.map((m, i) => {
-              const color = accentColor(i);
+              const accent = accentClass(i);
               const photo = safeUrl(m.photo_url);
               return (
                 <li key={m.id} className="cast-card">
@@ -49,7 +49,7 @@ export function Cast() {
                     onClick={(e) => { opener.current = e.currentTarget; setOpen(i); }}
                     aria-haspopup="dialog"
                   >
-                    <span className="cast-card__photo" style={{ background: color }}>
+                    <span className={`cast-card__photo ${accent}`}>
                       {photo && <img className="cast-card__img" src={photo} alt={`Foto de ${m.name}`} loading="lazy" />}
                     </span>
                     <span className="cast-card__body">
@@ -57,7 +57,7 @@ export function Cast() {
                         <span className="cast-card__name">{m.name}</span>
                         {m.role && <span className="cast-card__role">{m.role}</span>}
                       </span>
-                      <span className="cast-card__more" style={{ background: color }}>Conhecer ＋</span>
+                      <span className={`cast-card__more ${accent}`}>Conhecer ＋</span>
                     </span>
                   </button>
                 </li>
@@ -75,7 +75,7 @@ export function Cast() {
         onClick={(e) => { if (e.target === e.currentTarget) dialog.current?.close(); }}
       >
         {current && (
-          <div className="member__inner" style={{ borderColor: currentColor }}>
+          <div className={`member__inner ${currentAccent}`}>
             <button type="button" className="arrow arrow--pause member__close" onClick={() => dialog.current?.close()} aria-label="Fechar">✕</button>
             {currentPhoto && (
               <div className="member__photo">

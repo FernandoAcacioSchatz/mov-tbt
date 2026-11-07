@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
 import { friendlyError, ServiceError } from './errors';
+import { fetchHistoryYears } from './historyService';
 import type {
   Member, Photo, Podcast, ResourceTable, Show, SiteContent, SiteTexts, Video,
 } from '../types/content';
@@ -21,18 +22,20 @@ async function selectAll<T>(table: ResourceTable): Promise<T[]> {
 
 /** Carrega todo o conteúdo público do site. */
 export async function fetchSiteContent(): Promise<SiteContent> {
-  const [textRows, shows, members, videos, podcasts, photos] = await Promise.all([
+  const [textRows, shows, members, videos, podcasts, photos, historyYears] = await Promise.all([
     supabase.from('site_content').select('key,value'),
     selectAll<Show>('shows'),
     selectAll<Member>('members'),
     selectAll<Video>('videos'),
     selectAll<Podcast>('podcasts'),
     selectAll<Photo>('photos'),
+    // falha na História não derruba a página inicial: a seção só fica sem os anos
+    fetchHistoryYears().catch(() => []),
   ]);
   if (textRows.error) throw friendlyError(textRows.error, 'Não foi possível carregar os textos.');
   const texts: SiteTexts = {};
   for (const row of textRows.data ?? []) texts[row.key as string] = row.value as string;
-  return { texts, shows, members, videos, podcasts, photos };
+  return { texts, shows, members, videos, podcasts, photos, historyYears };
 }
 
 // ---------- Área administrativa (as regras de segurança do banco exigem login de admin) ----------
