@@ -1,0 +1,66 @@
+/*
+ * Utilitárias e paleta por classe (F-01).
+ * Objetivo de segurança: substituir TODOS os atributos style={{…}} inline por classes,
+ * para que a CSP possa remover 'unsafe-inline' de style-src (ver vercel.json).
+ * As classes apenas reaplicam os MESMOS valores que antes eram inline (mesmas variáveis
+ * de --accent-cycle / --color / --space), então a aparência não muda.
+ * Importado por último em main.tsx para vencer a cascata quando necessário.
+ */
+
+/* ---- Espaçamentos (equivalentes aos antigos style inline) ---- */
+.u-mb-3 { margin-bottom: var(--space-3); }
+.u-mb-5 { margin-bottom: var(--space-5); }
+.u-mb-6 { margin-bottom: var(--space-6); }
+.u-mb-7 { margin-bottom: var(--space-7); }
+.u-mt-5 { margin-top: var(--space-5); }
+.u-my-4 { margin-block: var(--space-4); }
+.u-my-5 { margin-block: var(--space-5); }
+
+/* ---- Larguras / tamanhos de texto pontuais ---- */
+.u-maxw-620 { max-width: 38.75rem; }
+.u-maxw-512 { max-width: 32rem; }
+.u-fs-lg { font-size: 1.5rem; }
+.u-relative { position: relative; }
+
+/* ---- Paleta cíclica de destaque (accentColor → accentClass) ---- */
+.accent-bg-1 { background: var(--accent-cycle-1); }
+.accent-bg-2 { background: var(--accent-cycle-2); }
+.accent-bg-3 { background: var(--accent-cycle-3); }
+.accent-bg-4 { background: var(--accent-cycle-4); }
+
+/* Define a custom property --ticket (ficha "Sobre") pela paleta cíclica */
+.stat--accent-1 { --ticket: var(--accent-cycle-1); }
+.stat--accent-2 { --ticket: var(--accent-cycle-2); }
+.stat--accent-3 { --ticket: var(--accent-cycle-3); }
+.stat--accent-4 { --ticket: var(--accent-cycle-4); }
+
+/* Define a custom property --door-color (portas da História) pela paleta cíclica */
+.door--accent-1 { --door-color: var(--accent-cycle-1); }
+.door--accent-2 { --door-color: var(--accent-cycle-2); }
+.door--accent-3 { --door-color: var(--accent-cycle-3); }
+.door--accent-4 { --door-color: var(--accent-cycle-4); }
+
+/* Borda do card expandido de integrante (member__inner) pela paleta cíclica */
+.member__inner--accent-1 { border-color: var(--accent-cycle-1); }
+.member__inner--accent-2 { border-color: var(--accent-cycle-2); }
+.member__inner--accent-3 { border-color: var(--accent-cycle-3); }
+.member__inner--accent-4 { border-color: var(--accent-cycle-4); }
+
+/* ---- Ícones de contato ---- */
+.contact__icon--mail { background: var(--color-yellow); }
+.contact__icon--whats { background: var(--color-teal); }
+.contact__icon--pin { background: var(--color-pink); }
+
+/* ---- Cores das redes sociais no rodapé (--social) ---- */
+.footer__social--socInstagram { --social: var(--color-pink); }
+.footer__social--socYoutube { --social: var(--color-yellow); }
+.footer__social--socSpotify { --social: var(--color-teal); }
+.footer__social--socSoundcloud { --social: var(--color-orange); }
+
+/* ---- Colunas do grid de elenco (--cast-cols-wide, 1..6) ---- */
+.cast-grid--cols-1 { --cast-cols-wide: 1; }
+.cast-grid--cols-2 { --cast-cols-wide: 2; }
+.cast-grid--cols-3 { --cast-cols-wide: 3; }
+.cast-grid--cols-4 { --cast-cols-wide: 4; }
+.cast-grid--cols-5 { --cast-cols-wide: 5; }
+.cast-grid--cols-6 { --cast-cols-wide: 6; }

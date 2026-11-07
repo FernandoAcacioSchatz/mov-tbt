@@ -36,3 +36,13 @@ export function sortShows<T extends { date: string }>(shows: T[], today: string 
 export function accentColor(index: number): string {
   return `var(--accent-cycle-${(index % 4) + 1})`;
 }
+
+/** Numero da cor ciclica (1..4) para montar classes de paleta (F-01, sem style inline). */
+export function accentN(index: number): 1 | 2 | 3 | 4 {
+  return ((index % 4) + 1) as 1 | 2 | 3 | 4;
+}
+
+/** Classe de fundo da paleta ciclica: accent-bg-1..4. */
+export function accentClass(index: number): string {
+  return `accent-bg-${accentN(index)}`;
+}

@@ -83,7 +83,7 @@ export function AdminHistoryPage() {
             <button type="button" className="btn btn--outline" onClick={() => setAskLeave(true)}>Cancelar edição</button>
           )}
         </div>
-        <p className="ed-hint" style={{ marginBottom: 'var(--space-5)' }}>
+        <p className="ed-hint u-mb-5">
           Escolha o ano e o tipo. Tudo aparece no site em ordem cronológica, pela data do acontecimento — não é preciso ordenar nada.
           Datas aceitas: de 2004 até hoje.
         </p>

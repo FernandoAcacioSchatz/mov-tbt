@@ -73,6 +73,8 @@ export interface SiteContent {
   videos: Video[];
   podcasts: Podcast[];
   photos: Photo[];
+  /** anos da História, carregados junto para a seção não surgir depois e empurrar a página */
+  historyYears?: HistoryYear[];
 }
 
 export type ResourceTable = 'shows' | 'members' | 'videos' | 'podcasts' | 'photos';

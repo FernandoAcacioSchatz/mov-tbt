@@ -12,10 +12,10 @@ function counts(y: HistoryYear): string {
 }
 
 /** Cartão de um ano da História: capa (foto do 1º espetáculo do ano), o ano em destaque e o que há nele. */
-export function YearCard({ year, color }: { year: HistoryYear; color: string }) {
+export function YearCard({ year, accent }: { year: HistoryYear; accent: string }) {
   const cover = thumbUrl(year.cover_url);
   return (
-    <Link to={`/historia/${year.year}`} className="year-card" style={{ background: color }} aria-label={`${year.year}: ${counts(year)}`}>
+    <Link to={`/historia/${year.year}`} className={`year-card ${accent}`} aria-label={`${year.year}: ${counts(year)}`}>
       {cover && <img className="year-card__img" src={cover} alt="" loading="lazy" />}
       <span className="year-card__shade" aria-hidden="true" />
       <span className="year-card__body">

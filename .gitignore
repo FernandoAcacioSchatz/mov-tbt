@@ -11,3 +11,7 @@ test-results
 .DS_Store
 .vercel
 .netlify
+
+# Relatórios de segurança / auditoria (uso interno; o repositório é público)
+security/
+*.pdf

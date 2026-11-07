@@ -50,7 +50,7 @@ export function LoginPage() {
   return (
     <main id="conteudo" className="container page">
       <div className="login">
-        <h1 className="h2" style={{ marginBottom: 'var(--space-5)' }}>Entrar</h1>
+        <h1 className="h2 u-mb-5">Entrar</h1>
         <form className="form" onSubmit={(e) => void handleSubmit(onSubmit)(e)} noValidate aria-label="Login da administração">
           <div className="field">
             <label htmlFor="l-email">E-mail</label>

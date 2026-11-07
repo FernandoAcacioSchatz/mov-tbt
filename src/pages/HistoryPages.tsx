@@ -12,7 +12,7 @@ import {
 } from '../services/historyService';
 import { formatPreciseDate } from '../utils/dates';
 import { safeUrl } from '../utils/url';
-import { accentColor } from '../utils/format';
+import { accentClass, accentN } from '../utils/format';
 import type { HistoryKind, HistoryPost } from '../types/content';
 import { NotFoundPage } from './NotFoundPage';
 
@@ -36,7 +36,7 @@ export function HistoryIndexPage() {
         <LoadingOrError loading={years.loading} error={years.error} />
         {years.data?.length === 0 && <p className="empty">Em breve.</p>}
         <ul className="years-grid">
-          {years.data?.map((y, i) => <li key={y.year}><YearCard year={y} color={accentColor(i)} /></li>)}
+          {years.data?.map((y, i) => <li key={y.year}><YearCard year={y} accent={accentClass(i)} /></li>)}
         </ul>
       </section>
     </HistoryLayout>
@@ -66,7 +66,7 @@ export function HistoryYearPage() {
         <ul className="doors">
           {doors.map((d, i) => (
             <li key={d.kind}>
-              <Link to={`/historia/${year}/${d.kind}`} className="door" style={{ ['--door-color' as string]: accentColor(i) }}>
+              <Link to={`/historia/${year}/${d.kind}`} className={`door door--accent-${accentN(i)}`}>
                 <span className="door__label">{KIND_LABEL[d.kind]}</span>
                 <span className="door__count"><strong>{d.count}</strong> {d.text}</span>
                 <span className="door__go" aria-hidden="true">→</span>
@@ -210,7 +210,7 @@ export function HistoryMediaPage() {
         <LoadingOrError loading={res.loading} error={res.error} />
         {res.data && items.length === 0 && <p className="empty">Nada cadastrado aqui em {year}.</p>}
         <ul className="media-grid" aria-label={`Na mídia em ${year}`}>
-          {items.map((m, i) => <li key={m.id}><MediaCard item={m} color={accentColor(i)} /></li>)}
+          {items.map((m, i) => <li key={m.id}><MediaCard item={m} accent={accentClass(i)} /></li>)}
         </ul>
       </section>
     </HistoryLayout>

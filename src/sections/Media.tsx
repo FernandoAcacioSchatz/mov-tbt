@@ -2,7 +2,7 @@ import { useContent } from '../hooks/useContent';
 import { useTexts } from '../hooks/useTexts';
 import { EditButton } from '../components/ui/EditButton';
 import { SafeLink } from '../components/ui/SafeLink';
-import { accentColor } from '../utils/format';
+import { accentClass } from '../utils/format';
 import { safeUrl, youtubeId } from '../utils/url';
 
 export function Media() {
@@ -24,7 +24,7 @@ export function Media() {
             <div className="videos">
               {videos.map((v, i) => (
                 <SafeLink key={v.id} href={v.href} className="video-card" aria-label={`Assistir: ${v.title}`}>
-                  <div className="video-card__cover" style={{ background: accentColor(i) }}>
+                  <div className={`video-card__cover ${accentClass(i)}`}>
                     {(() => {
                       const yt = youtubeId(v.href);
                       const cover = safeUrl(v.cover_url) ?? (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : undefined);
@@ -50,7 +50,7 @@ export function Media() {
             <div className="podcasts">
               {podcasts.map((p, i) => (
                 <SafeLink key={p.id} href={p.href || t('socSpotify')} className="podcast">
-                  <span className="podcast__n" style={{ background: accentColor(i) }}>{p.n}</span>
+                  <span className={`podcast__n ${accentClass(i)}`}>{p.n}</span>
                   <span className="podcast__title">{p.title}</span>
                   <span className="podcast__cta">Ouvir ↗</span>
                 </SafeLink>
@@ -67,7 +67,7 @@ export function Media() {
                 const src = safeUrl(ph.src);
                 return (
                   <figure key={ph.id} className="photo">
-                    <div style={{ background: accentColor(i) }}>
+                    <div className={accentClass(i)}>
                       {src && <img src={src} alt={ph.caption} loading="lazy" />}
                     </div>
                     <figcaption><strong>{ph.caption}</strong><br /><span>{ph.taken_when}</span></figcaption>

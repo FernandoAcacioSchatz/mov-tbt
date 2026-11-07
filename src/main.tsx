@@ -8,6 +8,7 @@ import './styles/globals.css';
 import './styles/site.css';
 import './styles/history.css';
 import './styles/admin.css';
+import './styles/utilities.css';
 
 // Se o Supabase não aceitar o endereço de retorno, ele manda o link de recuperação para a página inicial (Site URL).
 // Nesse caso, leva os códigos do link para /redefinir-senha, onde eles são lidos.

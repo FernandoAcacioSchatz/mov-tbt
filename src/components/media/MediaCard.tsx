@@ -4,11 +4,11 @@ import { formatPreciseDate } from '../../utils/dates';
 import type { HistoryMedia } from '../../types/content';
 
 /** Cartão de um item da TBT na mídia: capa, tipo, veículo, título e data. Abre a página do item. */
-export function MediaCard({ item, color }: { item: HistoryMedia; color: string }) {
+export function MediaCard({ item, accent }: { item: HistoryMedia; accent: string }) {
   const cover = mediaCover(item);
   return (
     <Link to={`/midias/${item.id}`} className="media-card">
-      <span className="media-card__cover" style={{ background: color }}>
+      <span className={`media-card__cover ${accent}`}>
         {cover && <img src={cover} alt="" loading="lazy" />}
         <span className="media-card__type">{MEDIA_TYPE_LABEL[item.media_type]}</span>
         {item.media_type === 'video' && <span className="media-card__play" aria-hidden="true">▶</span>}
